@@ -22,10 +22,10 @@ func TestNilUserHandler(t *testing.T) {
 	initStore(context.Background())
 
 	router := gin.Default()
-	router.GET("/:id", getUserHandler)
+	router.GET("/user/:id", getUserHandler)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/123", nil)
+	req, _ := http.NewRequest("GET", "/user/123", nil)
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusBadRequest, w.Code)

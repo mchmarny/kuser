@@ -28,9 +28,12 @@ func main() {
 
 	// root & health
 	r.GET("/", healthHandler)
-	r.GET("/:id", getUserHandler)
+
+	r.GET("/user/:id", getUserHandler)
 	r.POST("/user", saveUserHandler)
+
 	r.POST("/event", saveUserEventHandler)
+
 	r.GET("/health", healthHandler)
 
 	// port

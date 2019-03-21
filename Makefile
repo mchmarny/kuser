@@ -20,11 +20,11 @@ image:
 
 # DEPLOYMENT
 
-push:
-	kubectl apply -f deployment/config.yaml
-	kubectl apply -f deployment/service.yaml
+service:
+	kubectl apply -f deployment/config.yaml -n demo
+	kubectl apply -f deployment/service.yaml  -n demo
 
 rm:
-	kubectl delete -f deployment/service.yaml
+	kubectl delete -f deployment/service.yaml  -n demo
 
 

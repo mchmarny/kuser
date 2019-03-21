@@ -1,24 +1,19 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: events
-  namespace: demo
-  labels:
-    serving.knative.dev/visibility: cluster-local
+  name: kuser
+  # labels:
+  #   serving.knative.dev/visibility: cluster-local
 spec:
   runLatest:
     configuration:
       revisionTemplate:
-        metadata:
-          labels:
-            demo: events
         spec:
           container:
-            image: gcr.io/s9-demo/myevents:latest
-            imagePullPolicy: Always
+            image: gcr.io/s9-demo/kuser:latest
             env:
             - name: RELEASE
-              value: "v0.2.7"
+              value: "v0.0.3"
             - name: GCP_PROJECT_ID
               valueFrom:
                 configMapKeyRef:
