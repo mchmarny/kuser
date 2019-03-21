@@ -2,17 +2,17 @@
 FROM golang:latest as build
 
 # copy
-WORKDIR /go/src/github.com/mchmarny/myevents/
+WORKDIR /go/src/github.com/mchmarny/kuser/
 COPY . /src/
 
 # dependancies
 WORKDIR /src/
 ENV GO111MODULE=on
-RUN go mod download
+RUN go mod tidy
 
 # build
-WORKDIR /src/cmd/service/
-RUN CGO_ENABLED=0 go build -v -o /myevents
+WORKDIR /src/
+RUN CGO_ENABLED=0 go build -v -o /kuser
 
 
 
@@ -21,8 +21,8 @@ FROM alpine as release
 RUN apk add --no-cache ca-certificates
 
 # app executable
-COPY --from=build /myevents /app/
+COPY --from=build /kuser /app/
 
 # run
 WORKDIR /app/
-ENTRYPOINT ["./myevents"]
+ENTRYPOINT ["./kuser"]
