@@ -19,16 +19,22 @@ var (
 	fsClient   *firestore.Client
 	userColl   *firestore.CollectionRef
 	eventColl   *firestore.CollectionRef
+	errNilDocRef = errors.New("firestore: nil DocumentRef")
 )
 
 
-func initStore() {
+func initStore(ctx context.Context) {
+
+	// in case called multiple times during test
+	if eventColl != nil && userColl != nil && fsClient != nil {
+		return
+	}
 
 	projectID := mustGetEnv("GCP_PROJECT_ID", "")
 	log.Printf("Initiating firestore in %s project", projectID)
 
 	// Assumes GOOGLE_APPLICATION_CREDENTIALS is set
-	c, err := firestore.NewClient(context.Background(), projectID)
+	c, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Error while creating Firestore client: %v", err)
 	}
@@ -46,11 +52,10 @@ func getUser(ctx context.Context, id string) (usr *message.KUser, err error) {
 
 	d, err := userColl.Doc(id).Get(ctx)
 	if err != nil {
+		if err == errNilDocRef {
+			return nil, fmt.Errorf("No user for ID: %s", id)
+		}
 		return nil, err
-	}
-
-	if d == nil {
-		return nil, fmt.Errorf("No user for ID: %s", id)
 	}
 
 	var u message.KUser
@@ -64,8 +69,6 @@ func getUser(ctx context.Context, id string) (usr *message.KUser, err error) {
 
 
 func saveUser(ctx context.Context, usr *message.KUser) error {
-
-	log.Printf("Saving User id:%s - %v", usr.ID, usr)
 
 	if usr == nil || usr.ID == "" {
 		log.Println("nil id on user save")
@@ -83,8 +86,6 @@ func saveUser(ctx context.Context, usr *message.KUser) error {
 }
 
 func saveEvent(ctx context.Context, event *message.KUserEvent) error {
-
-	log.Printf("Saving Event id:%s - %v", event.ID, event)
 
 	if event == nil || event.ID == "" {
 		log.Println("nil id on event save")

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"time"
+	"fmt"
 
 	"github.com/mchmarny/kuser/message"
 
@@ -11,11 +12,10 @@ import (
 
 )
 
-func getTestUser(email string) *message.KUser {
-	id := makeID(email)
+func getTestUserFromID(id string) *message.KUser {
 	return &message.KUser{
 		ID:      id,
-		Email:   email,
+		Email:   fmt.Sprintf("id-%s@domain.com", id),
 		Name:    "Test User",
 		Created: time.Now(),
 		Updated: time.Now(),
@@ -42,11 +42,11 @@ func TestUser(t *testing.T) {
 		t.Skip("Skipping TestSaveUser")
 	}
 
-	initStore()
+	ctx := context.Background()
+	initStore(ctx)
 
 	// create
-	ctx := context.Background()
-	usr := getTestUser("test@domain.com")
+	usr := getTestUserFromID("store-123")
 	err := saveUser(ctx, usr)
 	assert.Nil(t, err)
 

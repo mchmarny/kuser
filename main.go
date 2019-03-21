@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"fmt"
+	"context"
 
 	"github.com/gin-gonic/gin"
 
@@ -17,7 +18,8 @@ const (
 
 func main() {
 
-	initStore()
+	ctx := context.Background()
+	initStore(ctx)
 
 	// router
 	r := gin.New()
@@ -26,7 +28,7 @@ func main() {
 
 	// root & health
 	r.GET("/", healthHandler)
-	r.GET("/:email", getUserHandler)
+	r.GET("/:id", getUserHandler)
 	r.POST("/user", saveUserHandler)
 	r.POST("/event", saveUserEventHandler)
 	r.GET("/health", healthHandler)
