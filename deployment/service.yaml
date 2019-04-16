@@ -2,18 +2,18 @@ apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
   name: kuser
-  # labels:
-  #   serving.knative.dev/visibility: cluster-local
+  labels:
+    # serving.knative.dev/visibility: cluster-local
 spec:
   runLatest:
     configuration:
       revisionTemplate:
         spec:
           container:
-            image: gcr.io/s9-demo/kuser:latest
+            image: gcr.io/knative-samples/kuser:latest
             env:
             - name: RELEASE
-              value: "v0.0.4"
+              value: "v0.0.5"
             - name: GCP_PROJECT_ID
               valueFrom:
                 configMapKeyRef:

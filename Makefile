@@ -16,7 +16,14 @@ image:
 	go mod vendor
 	gcloud builds submit \
 		--project ${GCP_PROJECT} \
-		--tag gcr.io/${GCP_PROJECT}/kuser:latest
+		--tag gcr.io/${GCP_PROJECT}/kuser
+
+sample-image:
+	go mod tidy
+	go mod vendor
+	gcloud builds submit \
+		--project knative-samples \
+		--tag gcr.io/knative-samples/kuser
 
 # DEPLOYMENT
 
