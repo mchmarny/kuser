@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: kuser
   labels:
-    # serving.knative.dev/visibility: cluster-local
+    serving.knative.dev/visibility: cluster-local
 spec:
   runLatest:
     configuration:
@@ -12,10 +12,10 @@ spec:
           container:
             image: gcr.io/knative-samples/kuser:latest
             env:
-            - name: RELEASE
-              value: "v0.0.5"
-            - name: GCP_PROJECT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: global-config
-                  key: project
+              - name: RELEASE
+                value: "v0.0.5"
+              - name: GCP_PROJECT_ID
+                valueFrom:
+                  configMapKeyRef:
+                    name: global-config
+                    key: project

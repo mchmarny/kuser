@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: global-config
 data:
-  project: "s9-demo"
+  project: "cloudylabs"

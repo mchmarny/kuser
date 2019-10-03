@@ -18,12 +18,12 @@ image:
 		--project ${GCP_PROJECT} \
 		--tag gcr.io/${GCP_PROJECT}/kuser
 
-sample-image:
+pubic-image:
 	go mod tidy
 	go mod vendor
 	gcloud builds submit \
-		--project knative-samples \
-		--tag gcr.io/knative-samples/kuser
+		--project cloudylabs-public \
+		--tag gcr.io/cloudylabs-public/user:1.0.1
 
 # DEPLOYMENT
 
