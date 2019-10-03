@@ -1,27 +1,29 @@
 package main
 
 import (
-	"errors"
-	"log"
 	"context"
+	"errors"
 	"fmt"
+	"log"
+
 	"cloud.google.com/go/firestore"
+	"github.com/mchmarny/gcputil/project"
 	"github.com/mchmarny/kuser/message"
 	"google.golang.org/api/iterator"
 )
 
 const (
-	userCollectionName = "kuser"
-	eventCollectionName = "kuser-event"
+	userCollectionName  = "user"
+	eventCollectionName = "user-event"
 )
 
 var (
-	fsClient   *firestore.Client
-	userColl   *firestore.CollectionRef
-	eventColl   *firestore.CollectionRef
+	fsClient     *firestore.Client
+	userColl     *firestore.CollectionRef
+	eventColl    *firestore.CollectionRef
 	errNilDocRef = errors.New("firestore: nil DocumentRef")
+	projectID    = project.GetIDOrFail()
 )
-
 
 func initStore(ctx context.Context) {
 
@@ -30,7 +32,6 @@ func initStore(ctx context.Context) {
 		return
 	}
 
-	projectID := mustGetEnv("GCP_PROJECT_ID", "")
 	log.Printf("Initiating firestore in %s project", projectID)
 
 	// Assumes GOOGLE_APPLICATION_CREDENTIALS is set
@@ -42,7 +43,6 @@ func initStore(ctx context.Context) {
 	userColl = c.Collection(userCollectionName)
 	eventColl = c.Collection(eventCollectionName)
 }
-
 
 func getUser(ctx context.Context, id string) (usr *message.KUser, err error) {
 
@@ -66,7 +66,6 @@ func getUser(ctx context.Context, id string) (usr *message.KUser, err error) {
 	return &u, nil
 
 }
-
 
 func saveUser(ctx context.Context, usr *message.KUser) error {
 
@@ -102,7 +101,6 @@ func saveEvent(ctx context.Context, event *message.KUserEvent) error {
 
 }
 
-
 func deleteUser(ctx context.Context, id string) error {
 
 	if id == "" {
@@ -135,4 +133,3 @@ func deleteUser(ctx context.Context, id string) error {
 	return err
 
 }
-

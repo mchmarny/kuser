@@ -23,12 +23,11 @@ pubic-image:
 	go mod vendor
 	gcloud builds submit \
 		--project cloudylabs-public \
-		--tag gcr.io/cloudylabs-public/user:1.0.1
+		--tag gcr.io/cloudylabs-public/user:1.0.2
 
 # DEPLOYMENT
 
 service:
-	kubectl apply -f deployment/config.yaml -n demo
 	kubectl apply -f deployment/service.yaml  -n demo
 
 rm:

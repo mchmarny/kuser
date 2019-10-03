@@ -1,14 +1,12 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"os"
-	"fmt"
-	"context"
 
 	"github.com/gin-gonic/gin"
-
-
 )
 
 const (
@@ -17,6 +15,8 @@ const (
 )
 
 func main() {
+
+	gin.SetMode(gin.ReleaseMode)
 
 	ctx := context.Background()
 	initStore(ctx)
